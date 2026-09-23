@@ -101,6 +101,6 @@ STREAMLIT_SERVER_PORT=8501
 
 ### AI Models Used
 
-1. **Llama 3.3 70B Versatile** (primary)
+1. **Llama 3.1 70B Versatile** (primary)
 2. **Llama 3.1 8B Instant** (fallback)
-3. **Mixtral 8x7B MoE / Gemma 2 9B IT** (backup)
+3. **Gemma 2 9B IT** (backup)

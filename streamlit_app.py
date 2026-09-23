@@ -1,17 +1,17 @@
-# Main entry point for Streamlit Cloud deployment
-# This file ensures Streamlit Cloud uses the correct deployment version
+# Main entry point for Streamlit Cloud & local deployments
 
 import streamlit as st
 
-# MUST be first Streamlit command
+# Set page configuration
 st.set_page_config(
-    page_title="Enhanced SQL Assistant",
+    page_title="SQLGPT — Natural Language SQL Assistant",
     page_icon="🤖",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# Now import and run the main app
+# Import and execute main entry point
 from app import main
 
-# Run the app (works for both local and Streamlit Cloud)
-main()
+if __name__ == "__main__":
+    main()

@@ -153,7 +153,6 @@ class VisualizationEngine:
 
             elif chart_type == "scatter":
                 fig = px.scatter(df, x=x_col, y=y_col, color=color_col,
-                                 size=numeric_cols[0] if (numeric_cols := df.select_dtypes(include=['number']).columns.tolist()) else None,
                                  color_discrete_sequence=px.colors.qualitative.Vivid,
                                  title=display_title)
 

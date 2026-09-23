@@ -1,170 +1,128 @@
-# 🤖 SQLGPT — Natural Language SQL Assistant
+# 🤖 SQL Assistant
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org/)
 [![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white)](https://langchain.com/)
 [![Groq](https://img.shields.io/badge/Groq-FF6B35?style=for-the-badge&logoColor=white)](https://groq.com/)
-[![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com/)
 
-> **Chat with your relational databases in plain English with instant SQL generation, self-healing execution, and automated visualizations.**
+> **Chat with your databases in plain English**
 
-**SQLGPT** is an intelligent natural language SQL assistant built with **Generative AI**, **Groq**, **LangChain**, and **Python**. It translates natural-language queries into optimized read-only SQL, executes them safely, and automatically generates interactive **Plotly** charts and executive insights.
-
----
-
-## 🌟 Highlights & Key Features
-
-- **💬 Natural Language to SQL & Insights**: Converts free-form business questions into valid SQL queries, executing them against connected databases and synthesizing plain-English answers.
-- **⚡ Groq Multi-Model Cascading Fallback**: Integrates `Llama 3.3 70B`, `Llama 3.1 8B`, `Mixtral 8x7B`, and `Gemma 2` with dynamic runtime fallback using LangChain LCEL (`with_fallbacks`) for maximum uptime and resilience against rate limits.
-- **🔄 LangChain Self-Healing Pipeline**: Automatically detects syntax or execution errors, feeds error feedback back into the LLM, and self-corrects failing queries on the fly.
-- **🔒 Multi-Layer Read-Only & AST Injection Protection**: 
-  - Connection-level read-only mode (`mode=ro`, `PRAGMA query_only = ON`).
-  - AST-level validation using `sqlparse` supporting Common Table Expressions (`WITH ... SELECT`) while blocking DDL/DML mutations (`DROP`, `DELETE`, `UPDATE`, `INSERT`, `ALTER`, `TRUNCATE`, `PRAGMA`, etc.) and stacked query attacks.
-- **📊 AI-Powered Data Visualizations**: Automatically detects visual intent and generates interactive Plotly charts (Bar, Line, Pie, Scatter, Histogram, Area, Box) with real-time UI customization.
-- **🗄️ Extensible Database Layer**: Pluggable connector architecture with built-in support for SQLite (sample enterprise database and file uploads) and ready-to-use adapters for PostgreSQL and MySQL.
+An intelligent SQL interface powered by Groq's AI models and LangChain that converts natural language questions into SQL queries and visualizations.
 
 ---
 
-## 🏗️ Architecture Overview
+## ✨ Features
 
-```mermaid
-flowchart TD
-    User([User Natural Language Query]) --> UI[Streamlit UI / SQLGPT]
-    UI --> Orchestrator[LangChain LCEL Orchestration]
-    
-    subgraph LLM_Layer [Groq Multi-Model Layer with Runtime Fallback]
-        Orchestrator --> Primary[Llama 3.3 70B Versatile]
-        Primary -. Fallback on 429/Timeout .-> Secondary[Llama 3.1 8B Instant]
-        Secondary -. Backup Fallback .-> Tertiary[Mixtral 8x7B / Gemma 2]
-    end
-    
-    LLM_Layer --> SQLGen[Generated SQL Query]
-    SQLGen --> SecVal{SQL Security Validator\n- AST Read-only check\n- Anti-injection defense}
-    
-    SecVal -- Rejected --> Reject[Reject & Explain Violation]
-    SecVal -- Validated --> DBLayer[Extensible Database Connector]
-    
-    subgraph DBLayer [Database Connectors]
-        SQLiteConn[SQLite Connector\nmode=ro & PRAGMA query_only]
-        PGConn[PostgreSQL Connector]
-        MySQLConn[MySQL Connector]
-    end
-    
-    DBLayer --> QueryExec[Execute Read-Only Query]
-    QueryExec -- Error Detected --> SelfHeal[Self-Healing Loop\nError Feedback to LLM]
-    SelfHeal --> Primary
-    
-    QueryExec -- Success --> Results[DataFrame Results]
-    Results --> VizEngine[Plotly Auto-Visualization Engine]
-    Results --> Insights[LLM Executive Summary]
-    
-    VizEngine --> UIOutput[Interactive Charts + Data Table + Insights]
-    Insights --> UIOutput
-```
+- **🧠 AI-Powered**: Multiple Groq models with automatic fallback
+- **💬 Natural Language**: Ask questions in plain English
+- **📊 Smart Visualizations**: Auto-generated charts and graphs
+- **🔒 Secure**: Read-only operations with SQL injection protection
+- **🗄️ Database Support**: SQLite with more databases coming soon
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Prerequisites
-- Python 3.8+
-- Groq API Key ([Get a free key here](https://console.groq.com/))
+### Prerequisites
 
-### 2. Installation
+- Python 3.8+
+- Groq API key ([Get free here](https://console.groq.com/))
+
+### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/ayankhanjoiya/sql-gpt.git
+# Clone & install
+git clone https://github.com/YuvvrajSingh/sql-gpt.git
 cd sql-gpt
-
-# Create and activate a virtual environment
-python -m venv venv
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
+
+# Set up environment
+echo "GROQ_API_KEY=your_api_key_here" > .env
+
+# Run the app
+streamlit run streamlit_app.py
 ```
 
-### 3. Environment Configuration (Optional)
+Your SQL Assistant will be available at `http://localhost:8501`
 
-Create a `.env` file in the root directory:
+---
+
+## 📖 Usage
+
+1. **Enter your Groq API key** in the sidebar
+2. **Choose a database** (sample included or upload your own SQLite file)
+3. **Ask questions** like:
+   - "Show me the top 5 customers by sales"
+   - "Create a bar chart of monthly revenue"
+   - "Which products haven't been ordered recently?"
+
+### Example Queries
+
+```
+💬 "What tables are available?"
+💬 "Show me customer demographics"
+💬 "Plot sales trends over time"
+💬 "Find high-value customers"
+```
+
+---
+
+## 🗄️ Database Support
+
+- **✅ SQLite**: Full support (.db, .sqlite, .sqlite3)
+- **🔄 MySQL**: Coming soon
+- **🔄 PostgreSQL**: Planned
+- **🔄 SQL Server**: Planned
+
+The app includes a sample database with customers, products, orders, and employees data.
+
+---
+
+## 🎨 Visualizations
+
+Request charts by mentioning keywords like:
+
+- "show me a chart"
+- "create a graph"
+- "plot the data"
+
+**Available chart types**: Bar, Pie, Line, Scatter, Histogram
+
+---
+
+## ⚙️ Configuration
+
+### Environment Variables
+
 ```env
 GROQ_API_KEY=your_groq_api_key_here
+STREAMLIT_SERVER_PORT=8501
 ```
 
-### 4. Run the Application
+### AI Models Used
 
-```bash
-streamlit run app.py
-```
-Open your browser at `http://localhost:8501`.
-
----
-
-## 📁 Project Structure
-
-```
-sql-gpt/
-├── src/
-│   ├── db/
-│   │   ├── __init__.py          # Database module exports
-│   │   ├── base.py              # Abstract BaseDatabaseConnector interface
-│   │   ├── sqlite.py            # SQLite connector with read-only PRAGMAs
-│   │   ├── postgres.py          # Extensible PostgreSQL connector
-│   │   ├── mysql.py             # Extensible MySQL connector
-│   │   └── security.py          # AST SQL Security & injection validator
-│   ├── llm/
-│   │   ├── __init__.py          # LLM module exports
-│   │   ├── models.py            # Groq model registry & LCEL fallback chains
-│   │   ├── sql_chain.py         # LangChain SQL generator & self-healing engine
-│   │   └── viz_engine.py        # Automated Plotly visualization engine
-│   └── ui/
-│       ├── __init__.py          # UI module exports
-│       ├── components.py        # Reusable Streamlit components & cards
-│       └── styles.py            # Custom CSS and dark theme system
-├── create_sample_db.py          # Enterprise sample database generator
-├── extended_sample_data.db      # Sample SQLite database
-├── app.py                       # Main application entry point
-├── streamlit_app.py             # Streamlit Cloud entry point
-├── requirements.txt             # Production dependencies
-└── README.md                    # Project documentation
-```
+1. **Llama 3.1 70B Versatile** (primary)
+2. **Llama 3.1 8B Instant** (fallback)
+3. **Gemma 2 9B IT** (backup)
 
 ---
 
-## 💡 Example Queries to Try
+## 📊 Project Stats
 
-- 📊 **Visual Queries:**
-  - *"Show a bar chart of product inventory grouped by category"*
-  - *"Plot monthly revenue trend over time as a line chart"*
-  - *"Create a pie chart showing order distribution across countries"*
-- 📈 **Analytical Queries:**
-  - *"Who are the top 5 customers by total order spend?"*
-  - *"What is the average employee salary by department?"*
-  - *"Which products have stock levels below 50 units?"*
+![GitHub stars](https://img.shields.io/github/stars/YuvvrajSingh/sql-gpt?style=social)
+![GitHub forks](https://img.shields.io/github/forks/YuvvrajSingh/sql-gpt?style=social)
+![GitHub issues](https://img.shields.io/github/issues/YuvvrajSingh/sql-gpt)
 
 ---
 
-## 🗄️ Supported Databases
+<div align="center">
 
-| Database | Support Status | Read-Only Enforcement |
-| :--- | :---: | :--- |
-| **SQLite** | ✅ Native | `mode=ro` URI + `PRAGMA query_only = ON` |
-| **PostgreSQL** | ✅ Native | Read-only transactions + AST validation |
-| **MySQL** | ✅ Native | AST validation + dialect support |
-| **DuckDB / Snowflake** | 🔄 Extensible | Pluggable via `BaseDatabaseConnector` |
+### 🚀 Ready to chat with your databases?
 
----
+[![Deploy to Streamlit Cloud](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/)
 
-## 👨‍💻 Author
+**[⭐ Star this repo](https://github.com/YuvvrajSingh/sql-gpt)** • **[🍴 Fork it](https://github.com/YuvvrajSingh/sql-gpt/fork)** • **[📝 Report issues](https://github.com/YuvvrajSingh/sql-gpt/issues)**
 
-Developed with ❤️ by **[Ayan Khan](https://github.com/ayankhanjoiya)**
 
----
 
-## 📄 License
-
-This project is licensed under the MIT License.
+</div>

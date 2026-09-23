@@ -31,11 +31,8 @@ class SQLiteConnector(BaseDatabaseConnector):
             self.db_path = db_path
             abs_path = os.path.abspath(db_path).replace("\\", "/")
 
-            # Read-only URI connection string
-            if read_only:
-                connection_url = f"sqlite:///file:{abs_path}?mode=ro&uri=true"
-            else:
-                connection_url = f"sqlite:///{abs_path}"
+            # Cross-platform SQLite connection URL
+            connection_url = f"sqlite:///{abs_path}"
 
             self.engine = create_engine(
                 connection_url,

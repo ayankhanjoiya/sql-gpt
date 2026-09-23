@@ -83,7 +83,14 @@ def main():
 
     if db_source == "Sample SQLite (Enterprise)":
         sample_path = ensure_sample_database()
-        if st.sidebar.button("⚡ Connect Sample DB", use_container_width=True):
+        # Auto-connect if not connected yet or on explicit click
+        if not st.session_state.db_connected and not st.session_state.db_name:
+            success, msg = connector.connect(sample_path)
+            if success:
+                st.session_state.db_connected = True
+                st.session_state.db_name = "Enterprise Sample DB (Customers, Orders, Products)"
+
+        if st.sidebar.button("⚡ Reconnect Sample DB", use_container_width=True):
             success, msg = connector.connect(sample_path)
             if success:
                 st.session_state.db_connected = True

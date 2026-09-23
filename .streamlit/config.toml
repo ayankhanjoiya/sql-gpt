@@ -1,0 +1,14 @@
+# Streamlit Cloud Configuration
+# This file is used by Streamlit Cloud for deployment
+
+[general]
+email = ""
+
+[server]
+headless = true
+enableCORS = false
+port = 8501
+
+[browser]
+serverAddress = "localhost"
+gatherUsageStats = false

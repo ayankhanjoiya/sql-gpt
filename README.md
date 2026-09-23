@@ -32,7 +32,7 @@ An intelligent SQL interface powered by Groq's AI models and LangChain that conv
 
 ```bash
 # Clone & install
-git clone https://github.com/YuvvrajSingh/sql-gpt.git
+git clone https://github.com/ayankhanjoiya/sql-gpt.git
 cd sql-gpt
 pip install -r requirements.txt
 
@@ -101,28 +101,6 @@ STREAMLIT_SERVER_PORT=8501
 
 ### AI Models Used
 
-1. **Llama 3.1 70B Versatile** (primary)
+1. **Llama 3.3 70B Versatile** (primary)
 2. **Llama 3.1 8B Instant** (fallback)
-3. **Gemma 2 9B IT** (backup)
-
----
-
-## 📊 Project Stats
-
-![GitHub stars](https://img.shields.io/github/stars/YuvvrajSingh/sql-gpt?style=social)
-![GitHub forks](https://img.shields.io/github/forks/YuvvrajSingh/sql-gpt?style=social)
-![GitHub issues](https://img.shields.io/github/issues/YuvvrajSingh/sql-gpt)
-
----
-
-<div align="center">
-
-### 🚀 Ready to chat with your databases?
-
-[![Deploy to Streamlit Cloud](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/)
-
-**[⭐ Star this repo](https://github.com/YuvvrajSingh/sql-gpt)** • **[🍴 Fork it](https://github.com/YuvvrajSingh/sql-gpt/fork)** • **[📝 Report issues](https://github.com/YuvvrajSingh/sql-gpt/issues)**
-
-
-
-</div>
+3. **Mixtral 8x7B MoE / Gemma 2 9B IT** (backup)
